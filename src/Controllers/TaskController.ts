@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import DeleteTask from '../UseCase/DeleteTask/DeleteTask';
 import GetAllTasksUseCase from '../UseCase/GetAllTasks/GetAllTasksUseCase';
@@ -15,6 +16,7 @@ import SaveTaskUseCase from '../UseCase/SaveTask/SaveTaskUseCase';
 
 @Controller()
 export default class TaskController {
+  taskRepository: any;
   constructor(private readonly useCaseFactory: UseCaseFactory) {}
 
   @Get('/tasks')
@@ -37,5 +39,10 @@ export default class TaskController {
   @Delete('/tasks/:id')
   async delete(@Param('id') id: string) {
     return (await this.useCaseFactory.create(DeleteTask)).handle(Number(id));
+  }
+  // BONUS : Search 
+  @Get('/search')
+  async searchTasks(@Query('q') query: string) {
+    return this.taskRepository.search(query);
   }
 }

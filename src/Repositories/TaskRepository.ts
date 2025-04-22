@@ -36,4 +36,14 @@ export default class TaskRepository {
     });
     
   }
+  // BONUS : Search
+  async search(query: string) {
+    return this.prisma.task.findMany({
+      where: {
+        name: {
+          contains: query
+        },
+      },
+    });
+  }
 }
